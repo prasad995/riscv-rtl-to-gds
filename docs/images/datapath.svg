@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="100%" height="100%" style="background:#0d1117; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#58a6ff" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="32" fill="#58a6ff" font-size="20" font-weight="bold" text-anchor="middle">RV32I Single-Cycle Processor Architecture</text>
+  <text x="480" y="52" fill="#8b949e" font-size="12" text-anchor="middle">Top-Level Datapath, Control Unit, and Submodules</text>
+
+  <!-- Modules -->
+  <!-- PC -->
+  <rect x="40" y="220" width="90" height="90" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+  <text x="85" y="260" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Program</text>
+  <text x="85" y="278" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Counter</text>
+  <text x="85" y="300" fill="#8b949e" font-size="10" text-anchor="middle">u_pc</text>
+
+  <!-- IMEM -->
+  <rect x="170" y="205" width="100" height="120" rx="8" fill="#161b22" stroke="#388bfd" stroke-width="2"/>
+  <text x="220" y="255" fill="#58a6ff" font-size="13" font-weight="bold" text-anchor="middle">Instruction</text>
+  <text x="220" y="275" fill="#58a6ff" font-size="13" font-weight="bold" text-anchor="middle">Memory</text>
+  <text x="220" y="300" fill="#8b949e" font-size="10" text-anchor="middle">1024 Words</text>
+
+  <!-- Decoder -->
+  <rect x="310" y="110" width="110" height="90" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+  <text x="365" y="150" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Instruction</text>
+  <text x="365" y="170" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Decoder</text>
+
+  <!-- Control Unit -->
+  <rect x="460" y="80" width="120" height="120" rx="8" fill="#161b22" stroke="#d29922" stroke-width="2"/>
+  <text x="520" y="135" fill="#f0883e" font-size="14" font-weight="bold" text-anchor="middle">Control</text>
+  <text x="520" y="155" fill="#f0883e" font-size="14" font-weight="bold" text-anchor="middle">Unit</text>
+  <text x="520" y="180" fill="#8b949e" font-size="10" text-anchor="middle">9 Signals + a_sel</text>
+
+  <!-- Imm Gen -->
+  <rect x="310" y="380" width="110" height="80" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+  <text x="365" y="420" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Immediate</text>
+  <text x="365" y="440" fill="#f0f6fc" font-size="13" font-weight="bold" text-anchor="middle">Generator</text>
+
+  <!-- Register File -->
+  <rect x="460" y="240" width="120" height="160" rx="8" fill="#161b22" stroke="#238636" stroke-width="2"/>
+  <text x="520" y="310" fill="#3fb950" font-size="14" font-weight="bold" text-anchor="middle">Register</text>
+  <text x="520" y="330" fill="#3fb950" font-size="14" font-weight="bold" text-anchor="middle">File</text>
+  <text x="520" y="355" fill="#8b949e" font-size="10" text-anchor="middle">32 x 32-bit (x0=0)</text>
+
+  <!-- ALU -->
+  <polygon points="650,250 720,280 720,360 650,390 650,335 665,320 650,305" fill="#161b22" stroke="#a371f7" stroke-width="2"/>
+  <text x="682" y="325" fill="#d2a8ff" font-size="14" font-weight="bold" text-anchor="middle">ALU</text>
+
+  <!-- Data Mem -->
+  <rect x="760" y="280" width="110" height="120" rx="8" fill="#161b22" stroke="#388bfd" stroke-width="2"/>
+  <text x="815" y="335" fill="#58a6ff" font-size="13" font-weight="bold" text-anchor="middle">Data</text>
+  <text x="815" y="355" fill="#58a6ff" font-size="13" font-weight="bold" text-anchor="middle">Memory</text>
+  <text x="815" y="375" fill="#8b949e" font-size="10" text-anchor="middle">4096 Bytes (RAM)</text>
+
+  <!-- Branch / Jump Logic -->
+  <rect x="630" y="440" width="140" height="70" rx="8" fill="#161b22" stroke="#f85149" stroke-width="2"/>
+  <text x="700" y="472" fill="#ff7b72" font-size="12" font-weight="bold" text-anchor="middle">Branch &amp; Jump</text>
+  <text x="700" y="490" fill="#ff7b72" font-size="12" font-weight="bold" text-anchor="middle">Logic</text>
+
+  <!-- Data Lines (Blue) -->
+  <line x1="130" y1="265" x2="165" y2="265" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="270" y1="265" x2="290" y2="265" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="290" y1="265" x2="290" y2="155" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="290" y1="155" x2="305" y2="155" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="290" y1="265" x2="290" y2="420" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="290" y1="420" x2="305" y2="420" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="420" y1="140" x2="455" y2="140" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="420" y1="160" x2="440" y2="160" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="440" y1="160" x2="440" y2="300" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="440" y1="300" x2="455" y2="300" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="580" y1="290" x2="645" y2="290" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="350" x2="645" y2="350" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="720" y1="320" x2="755" y2="320" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="870" y1="340" x2="900" y2="340" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="900" y1="340" x2="900" y2="520" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="900" y1="520" x2="440" y2="520" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="440" y1="520" x2="440" y2="370" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="440" y1="370" x2="455" y2="370" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- PC Feedback (Red) -->
+  <line x1="700" y1="510" x2="700" y2="540" stroke="#ff7b72" stroke-width="2"/>
+  <line x1="700" y1="540" x2="20" y2="540" stroke="#ff7b72" stroke-width="2"/>
+  <line x1="20" y1="540" x2="20" y2="265" stroke="#ff7b72" stroke-width="2"/>
+  <line x1="20" y1="265" x2="35" y2="265" stroke="#ff7b72" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
