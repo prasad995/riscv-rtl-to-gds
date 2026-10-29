@@ -4,7 +4,7 @@ module tb_riscv_cpu;
 
     reg clk, rst;
 
-    riscv_cpu #(.MEM_FILE("tb/test_branch.hex")) uut (
+    riscv_cpu #(.MEM_FILE("tb/test_jal.hex")) uut (
         .clk(clk), .rst(rst)
     );
 
@@ -41,16 +41,14 @@ module tb_riscv_cpu;
         repeat(2) @(posedge clk);
         rst = 0;
 
-        // Run 35 cycles to allow the 5-iteration loop to finish
-        repeat(35) @(posedge clk);
+        // Run 20 cycles
+        repeat(20) @(posedge clk);
 
-        $display("--- Register Check (Test 5: Loops & Branches) ---");
-        check_reg(1, 32'd0);         // count finished at 0
-        check_reg(2, 32'd15);        // sum = 5+4+3+2+1 = 15 (0x0F)
-        check_reg(3, 32'd10);        // x3 = 10
-        check_reg(4, 32'd10);        // x4 = 10
-        check_reg(5, 32'd42);        // x5 = 42 (0x2A), skipped 99!
-        $display("-------------------------------------------------");
+        $display("--- Register Check (Test 6: JAL and JALR Function Call/Return) ---");
+        check_reg(1, 32'h00000008); // x1 (ra) = saved PC+4 return address
+        check_reg(2, 32'd15);        // x2 = modified by function (10 + 5 = 15)
+        check_reg(3, 32'd99);        // x3 = executed after return (99 = 0x63)
+        $display("-------------------------------------------------------------------");
 
         if (fail_count == 0)
             $display("ALL %0d TESTS PASSED", pass_count);
