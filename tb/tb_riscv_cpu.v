@@ -4,7 +4,7 @@ module tb_riscv_cpu;
 
     reg clk, rst;
 
-    riscv_cpu #(.MEM_FILE("tb/test_logic.hex")) uut (
+    riscv_cpu #(.MEM_FILE("tb/test_upper.hex")) uut (
         .clk(clk), .rst(rst)
     );
 
@@ -41,22 +41,14 @@ module tb_riscv_cpu;
         repeat(2) @(posedge clk);
         rst = 0;
 
-        // Run 25 cycles for 12 instructions
-        repeat(25) @(posedge clk);
+        // Run 15 cycles
+        repeat(15) @(posedge clk);
 
-        $display("--- Register Check (Test 2: Logic & Shifts) ---");
-        check_reg(1,  32'h000000FF);
-        check_reg(2,  32'h0000000F);
-        check_reg(3,  32'h0000000F); // and
-        check_reg(4,  32'h000000FF); // or
-        check_reg(5,  32'h000000F0); // xor
-        check_reg(6,  32'h00000004); // shift amount
-        check_reg(7,  32'h00000FF0); // sll
-        check_reg(8,  32'h0000000F); // srl (positive)
-        check_reg(9,  32'hFFFFFF00); // negative constant
-        check_reg(10, 32'hFFFFFFF0); // sra (arithmetic: F enters)
-        check_reg(11, 32'h0FFFFFF0); // srl (logical: 0 enters)
-        $display("------------------------------------------------");
+        $display("--- Register Check (Test 3: LUI & AUIPC) ---");
+        check_reg(1, 32'h12345678); // LUI + ADDI 32-bit constant
+        check_reg(2, 32'h00001008); // AUIPC (PC=0x08 + 0x1000)
+        check_reg(3, 32'h0000000C); // AUIPC (PC=0x0C + 0)
+        $display("--------------------------------------------");
 
         if (fail_count == 0)
             $display("ALL %0d TESTS PASSED", pass_count);
