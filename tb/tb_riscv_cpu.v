@@ -4,7 +4,7 @@ module tb_riscv_cpu;
 
     reg clk, rst;
 
-    riscv_cpu #(.MEM_FILE("tb/test_mem.hex")) uut (
+    riscv_cpu #(.MEM_FILE("tb/test_branch.hex")) uut (
         .clk(clk), .rst(rst)
     );
 
@@ -41,17 +41,16 @@ module tb_riscv_cpu;
         repeat(2) @(posedge clk);
         rst = 0;
 
-        // Run 20 cycles
-        repeat(20) @(posedge clk);
+        // Run 35 cycles to allow the 5-iteration loop to finish
+        repeat(35) @(posedge clk);
 
-        $display("--- Register Check (Test 4: Data Memory Load/Store) ---");
-        check_reg(1, 32'd32);        // base address pointer
-        check_reg(2, 32'h12345678);  // stored data value
-        check_reg(3, 32'h12345678);  // LW (load word)
-        check_reg(5, 32'h00000085);  // byte value
-        check_reg(6, 32'hFFFFFF85);  // LB (signed byte, F-extended)
-        check_reg(7, 32'h00000085);  // LBU (unsigned byte, 0-extended)
-        $display("-------------------------------------------------------");
+        $display("--- Register Check (Test 5: Loops & Branches) ---");
+        check_reg(1, 32'd0);         // count finished at 0
+        check_reg(2, 32'd15);        // sum = 5+4+3+2+1 = 15 (0x0F)
+        check_reg(3, 32'd10);        // x3 = 10
+        check_reg(4, 32'd10);        // x4 = 10
+        check_reg(5, 32'd42);        // x5 = 42 (0x2A), skipped 99!
+        $display("-------------------------------------------------");
 
         if (fail_count == 0)
             $display("ALL %0d TESTS PASSED", pass_count);
