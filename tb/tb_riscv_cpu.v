@@ -4,7 +4,7 @@ module tb_riscv_cpu;
 
     reg clk, rst;
 
-    riscv_cpu #(.MEM_FILE("tb/test_upper.hex")) uut (
+    riscv_cpu #(.MEM_FILE("tb/test_mem.hex")) uut (
         .clk(clk), .rst(rst)
     );
 
@@ -41,14 +41,17 @@ module tb_riscv_cpu;
         repeat(2) @(posedge clk);
         rst = 0;
 
-        // Run 15 cycles
-        repeat(15) @(posedge clk);
+        // Run 20 cycles
+        repeat(20) @(posedge clk);
 
-        $display("--- Register Check (Test 3: LUI & AUIPC) ---");
-        check_reg(1, 32'h12345678); // LUI + ADDI 32-bit constant
-        check_reg(2, 32'h00001008); // AUIPC (PC=0x08 + 0x1000)
-        check_reg(3, 32'h0000000C); // AUIPC (PC=0x0C + 0)
-        $display("--------------------------------------------");
+        $display("--- Register Check (Test 4: Data Memory Load/Store) ---");
+        check_reg(1, 32'd32);        // base address pointer
+        check_reg(2, 32'h12345678);  // stored data value
+        check_reg(3, 32'h12345678);  // LW (load word)
+        check_reg(5, 32'h00000085);  // byte value
+        check_reg(6, 32'hFFFFFF85);  // LB (signed byte, F-extended)
+        check_reg(7, 32'h00000085);  // LBU (unsigned byte, 0-extended)
+        $display("-------------------------------------------------------");
 
         if (fail_count == 0)
             $display("ALL %0d TESTS PASSED", pass_count);
