@@ -1,0 +1,30 @@
+# ==============================================================================
+# Yosys Synthesis Script: RISC-V 32x32 Register File
+# ==============================================================================
+
+# 1. Read Verilog RTL
+read_verilog rtl/register_file.v
+
+# 2. Elaborate hierarchy
+hierarchy -check -top register_file
+
+# 3. High-level synthesis (extract flip-flops and muxes)
+proc
+
+# 4. Check for latches or syntax errors
+check -assert
+
+# 5. Optimize and eliminate unused x0 registers
+opt
+
+# 6. Memory mapping pass (turns arrays into flip-flop registers)
+memory
+
+# 7. Optimization pass after memory extraction
+opt
+
+# 8. Print pre-techmap cell statistics
+stat
+
+# 9. Write netlist
+write_verilog -noattr results/register_file_synth.v

@@ -1,0 +1,37 @@
+# ==============================================================================
+# Yosys Synthesis Script: 32-bit ALU
+# ==============================================================================
+
+# 1. Read the Verilog source
+read_verilog rtl/alu.v
+
+# 2. Elaborate the design hierarchy (sets top module)
+hierarchy -check -top alu
+
+# 3. High-level synthesis & optimization
+# Converts behavioral processes (always blocks) into multiplexers and DFFs
+proc
+
+# Check for latch inference or combinational loops
+check -assert
+
+# Remove dead logic and constant fold
+opt
+
+# 4. Flatten and perform coarse-grain synthesis
+synth -top alu
+
+# 5. Technology mapping to generic logic gates (NAND, NOR, NOT, MUX)
+abc -g cmos2
+
+# 6. Clean up unused wires and cells
+clean
+
+# 7. Print design statistics
+stat
+
+# 8. Write synthesized gate-level netlist
+write_verilog -noattr results/alu_synth.v
+
+# 9. Generate Graphviz dot schematic representation
+show -format dot -prefix results/alu_schematic alu

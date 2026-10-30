@@ -1,0 +1,8 @@
+# Simulation binaries and waveform traces
+sim/
+*.vcd
+*.swp
+*.dot
+
+# Exclude oversized generated image files (>50MB)
+results/alu_schematic.png

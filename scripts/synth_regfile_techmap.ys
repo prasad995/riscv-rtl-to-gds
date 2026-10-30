@@ -1,0 +1,14 @@
+# ==============================================================================
+# Full Gate-Level Synthesis: Register File
+# ==============================================================================
+read_verilog rtl/register_file.v
+hierarchy -check -top register_file
+proc
+opt
+memory
+opt
+synth -top register_file
+abc -g cmos2
+clean
+stat
+write_verilog -noattr results/register_file_gate.v

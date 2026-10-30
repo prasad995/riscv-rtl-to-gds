@@ -1,0 +1,46 @@
+# ==============================================================================
+# Yosys Synthesis Script: RISC-V RV32I Synthesizable Core
+# ==============================================================================
+
+# 1. Read the synthesizable modules
+read_verilog rtl/riscv_core.v
+read_verilog rtl/program_counter.v
+read_verilog rtl/instr_decoder.v
+read_verilog rtl/control_unit.v
+read_verilog rtl/imm_gen.v
+read_verilog rtl/register_file.v
+read_verilog rtl/alu.v
+read_verilog rtl/branch_jump_logic.v
+
+# 2. Elaborate hierarchy
+hierarchy -check -top riscv_core
+
+# 3. High-level extraction of FFs and Muxes
+proc
+
+# 4. Check for latches
+check -assert
+
+# 5. Flatten the entire CPU into a single unified netlist
+flatten
+
+# 6. Map registers/memories to flip-flops
+memory
+
+# 7. Optimize
+opt
+
+# 8. Full synthesis mapping to logic gates
+synth -top riscv_core
+
+# 9. Map to CMOS gates (NAND, NOR, NOT, DFF)
+abc -g cmos2
+
+# 10. Clean up
+clean
+
+# 11. Print comprehensive cell statistics
+stat
+
+# 12. Write final gate-level netlist
+write_verilog -noattr results/riscv_core_synth.v
