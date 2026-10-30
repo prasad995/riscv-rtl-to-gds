@@ -1,0 +1,37 @@
+# ==============================================================================
+# Yosys Synthesis Script: Map riscv_core to SkyWater 130nm Standard Cells
+# ==============================================================================
+
+# 1. Read Verilog RTL files
+read_verilog rtl/riscv_core.v
+read_verilog rtl/program_counter.v
+read_verilog rtl/instr_decoder.v
+read_verilog rtl/control_unit.v
+read_verilog rtl/imm_gen.v
+read_verilog rtl/register_file.v
+read_verilog rtl/alu.v
+read_verilog rtl/branch_jump_logic.v
+
+# 2. Elaborate hierarchy
+hierarchy -check -top riscv_core
+proc
+check -assert
+flatten
+memory
+opt
+
+# 3. Coarse synthesis
+synth -top riscv_core
+
+# 4. Map D-Flip-Flops to Sky130 DFF cells
+dfflibmap -liberty /opt/pdks/sky130/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 5. Technology mapping to Sky130 combinational standard cells via ABC
+abc -liberty /opt/pdks/sky130/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 6. Clean and report
+clean
+stat -liberty /opt/pdks/sky130/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 7. Write Sky130 Gate-Level Netlist
+write_verilog -noattr results/riscv_core_sky130.v
