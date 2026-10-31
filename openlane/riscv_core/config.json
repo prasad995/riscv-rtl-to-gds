@@ -1,0 +1,22 @@
+{
+    "DESIGN_NAME": "riscv_core",
+    "VERILOG_FILES": [
+        "dir::../../rtl/riscv_core.v",
+        "dir::../../rtl/program_counter.v",
+        "dir::../../rtl/instr_decoder.v",
+        "dir::../../rtl/control_unit.v",
+        "dir::../../rtl/imm_gen.v",
+        "dir::../../rtl/register_file.v",
+        "dir::../../rtl/alu.v",
+        "dir::../../rtl/branch_jump_logic.v"
+    ],
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 20.0,
+    "FP_CORE_UTIL": 50,
+    "PL_TARGET_DENSITY_PCT": 55,
+    "FP_ASPECT_RATIO": 1,
+    "SYNTH_MAX_FANOUT": 12,
+    "RUN_KLAYOUT": true,
+    "PRIMARY_SIGNOFF_TOOL": "magic",
+    "QUIT_ON_LINT_ERRORS": false
+}

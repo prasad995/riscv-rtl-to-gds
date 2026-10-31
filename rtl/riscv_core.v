@@ -1,4 +1,3 @@
-`timescale 1ns/1ps
 
 module riscv_core (
     input  wire        clk,
