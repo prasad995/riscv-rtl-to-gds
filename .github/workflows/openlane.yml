@@ -20,19 +20,25 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install OpenLane 2 & Volare
+      - name: Install Volare & Download SkyWater 130nm PDK
         run: |
-          pip install openlane volare
-
-      - name: Download SkyWater 130nm PDK
-        run: |
+          pip install volare
           volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
           echo "PDK directory listing:"
           ls -la /home/runner/.volare
 
-      - name: Execute OpenLane 2 Flow
+      - name: Prepare Workspace Permissions
         run: |
-          openlane --dockerized --pdk sky130 --pdk-root /home/runner/.volare openlane/riscv_core/config.json
+          sudo chmod -R 777 ${{ github.workspace }}
+
+      - name: Execute OpenLane 2 Flow in Cloud Container
+        run: |
+          docker run --rm \
+            -v /home/runner/.volare:/home/runner/.volare \
+            -v ${{ github.workspace }}:/work \
+            -w /work \
+            ghcr.io/efabless/openlane2:2.3.10 \
+            openlane --pdk sky130 --pdk-root /home/runner/.volare openlane/riscv_core/config.json
 
       - name: Post-Run Permissions Fix
         if: always()
