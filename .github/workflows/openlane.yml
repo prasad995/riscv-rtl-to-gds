@@ -1,0 +1,58 @@
+name: OpenLane ASIC Flow (RTL to GDSII)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  physical-design:
+    name: Run OpenLane 2 Physical Design Flow
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Volare and Download SkyWater 130nm PDK
+        run: |
+          pip install volare
+          volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
+          echo "PDK directory listing:"
+          ls -la /home/runner/.volare
+
+      - name: Prepare Workspace Permissions
+        run: |
+          sudo chmod -R 777 ${{ github.workspace }}
+
+      - name: Execute OpenLane 2 Flow in Docker
+        run: |
+          docker run --rm \
+            -v /home/runner/.volare:/pdk:ro \
+            -v ${{ github.workspace }}:/work \
+            -w /work \
+            efabless/openlane:v2.3.10 \
+            openlane --pdk sky130 --pdk-root /pdk openlane/riscv_core/config.json
+
+      - name: Post-Run Permissions Fix
+        if: always()
+        run: |
+          sudo chmod -R 777 ${{ github.workspace }}
+
+      - name: Upload GDSII and Physical Design Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: riscv_core_gdsii_results
+          path: |
+            openlane/riscv_core/runs/*/final/
+            openlane/riscv_core/runs/*/reports/
+            openlane/riscv_core/runs/*/flow.log
+            openlane/riscv_core/runs/*/metrics.csv
+          retention-days: 14
