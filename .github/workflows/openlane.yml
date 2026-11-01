@@ -24,8 +24,6 @@ jobs:
         run: |
           pip install volare
           volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
-          echo "PDK directory listing:"
-          ls -la /home/runner/.volare
 
       - name: Prepare Workspace Permissions
         run: |
@@ -44,6 +42,33 @@ jobs:
         if: always()
         run: |
           sudo chmod -R 777 ${{ github.workspace }}
+
+      - name: Collect and Copy GDSII Results to results/
+        if: success()
+        run: |
+          mkdir -p results/physical_design
+          # Find and copy the final GDS file
+          find openlane/riscv_core/runs -name "*.gds" | head -n 1 | xargs -I{} cp {} results/riscv_core.gds || true
+          # Copy final DEF
+          find openlane/riscv_core/runs -name "*.def" -path "*/final/*" | head -n 1 | xargs -I{} cp {} results/physical_design/riscv_core_final.def || true
+          # Copy post-routing netlist
+          find openlane/riscv_core/runs -name "*.nl.v" -path "*/final/*" | head -n 1 | xargs -I{} cp {} results/physical_design/riscv_core_final.nl.v || true
+          # Copy flow log
+          find openlane/riscv_core/runs -name "flow.log" | head -n 1 | xargs -I{} cp {} results/physical_design/flow.log || true
+          # Copy metrics
+          find openlane/riscv_core/runs -name "metrics.csv" | head -n 1 | xargs -I{} cp {} results/physical_design/metrics.csv || true
+          echo "=== Collected files ==="
+          ls -lh results/riscv_core.gds || echo "GDS not found"
+          ls -lh results/physical_design/ || echo "No physical design files"
+
+      - name: Commit GDSII and Results to Repository
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results/riscv_core.gds results/physical_design/ || true
+          git diff --cached --quiet || git commit -m "ci(gds): add Phase 5 GDSII and physical design outputs [skip ci]"
+          git push origin main
 
       - name: Upload GDSII and Physical Design Reports
         if: always()
