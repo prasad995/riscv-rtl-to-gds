@@ -232,10 +232,4 @@ klayout results/riscv_core.gds &
 
 ---
 
-## 👨‍💻 Project & Mentorship Information
 
-- **Author / Design Engineer:** **Prasad Kale** (Domain: VLSI Design & Computer Architecture)
-- **GitHub Repository:** [`prasad995/riscv-rtl-to-gds`](https://github.com/prasad995/riscv-rtl-to-gds)
-- **Industry Mentor:** **Sindhu Vollala**
-- **Project Scope:** Major Project — End-to-End Open-Source RTL-to-GDSII VLSI ASIC Design Flow
-- **Submission Date:** November 2026
